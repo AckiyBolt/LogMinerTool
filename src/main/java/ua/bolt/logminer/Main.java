@@ -77,7 +77,7 @@ public class Main {
                         .append("Launch params:   <root_dir> <file_format> <regex_flag> <looking_for> <out_file>").append(System.lineSeparator())
                         .append("   <root_dir>    - start dir path, for recursively search.").append(System.lineSeparator())
                         .append("   <file_format> - format of searchable files.").append(System.lineSeparator())
-                        .append("   <regex_flag>  - [y] - regex search. [n] - contains search. Letters are not case sensitive.").append(System.lineSeparator())
+                        .append("   <regex_flag>  - [y] - regex search. [n] - contains search. Flag isn't case sensitive.").append(System.lineSeparator())
                         .append("   <looking_for> - searchable character sequence OR regular expression that matches searchable line.").append(System.lineSeparator())
                         .append("                   RU manual about regex is here: http://www.quizful.net/post/Java-RegExp").append(System.lineSeparator())
                         .append("   <out_file>    - output file path. If exist - will be deleted. Be careful.").append(System.lineSeparator()).append(System.lineSeparator())

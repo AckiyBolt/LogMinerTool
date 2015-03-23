@@ -25,7 +25,7 @@ Also it eats almost all CPU time and twice more RAM.
 Launch params:      [root_dir] [file_format] [regex_flag] [looking_for] [out_file]
 - **root_dir**    - start dir path, for recursively search.
 - **file_format** - format of searchable files.
-- **regex_flag**  - [y] - regex search. [n] - contains search. Letters are not case sensitive.
+- **regex_flag**  - [y] - regex search. [n] - contains search. Flag isn't case sensitive.
 - **looking_for** - searchable character sequence OR regular expression that matches searchable line.
                     RU manual about regex is here: http://www.quizful.net/post/Java-RegExp
 - **out_file**    - output file path. If exist - will be deleted. Be careful.
