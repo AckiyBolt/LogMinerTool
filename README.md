@@ -7,7 +7,8 @@ Output is file that has format: [file_name] [founded_line].
 Launch params:      [root_dir] [file_format] [looking_for] [out_file]
 - **root_dir**    - start dir path, for recursively search.
 - **file_format** - format of searchable files.
-- **looking_for** - something that log line should contains.
+- **looking_for** - regular expression that matches searchable line.
+                    ru man is here: http://www.quizful.net/post/Java-RegExp
 - **out_file**    - output file path. If exist - will be deleted. Be careful.
    
 Launch example (for *nix): java -jar logminer.jar "/user/anon/logs" ".log" "LoremIpsum" "/user/anon/out.txt"
