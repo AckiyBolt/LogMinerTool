@@ -2,6 +2,9 @@
 
 This is simple tool for recursively search of appropriate lines in some log archive (directory tree).
 
+Live test on: AMD A6-5400K@3.6GHz / 2.46RAM / Win7 / ~60 GB of logs
+Was spent: ~30 min / ~50Mb RAM
+
 Output is file that has format: [file_name] [founded_line].
 
 Launch params:      [root_dir] [file_format] [looking_for] [out_file]
