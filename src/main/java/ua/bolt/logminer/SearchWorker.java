@@ -1,6 +1,7 @@
 package ua.bolt.logminer;
 
 import ua.bolt.logminer.domain.MineResult;
+import ua.bolt.logminer.matcher.Matcher;
 
 import java.io.*;
 import java.util.concurrent.Callable;
@@ -12,11 +13,13 @@ public class SearchWorker implements Callable<MineResult> {
 
     private MineResult result;
     private File file;
-    private String pattern;
+    private String criteria;
+    private Matcher matcher;
 
-    public SearchWorker(File file, String pattern){
+    public SearchWorker(File file, String criteria, Matcher matcher){
         this.file = file;
-        this.pattern = pattern;
+        this.criteria = criteria;
+        this.matcher = matcher;
         this.result = new MineResult(file.getName());
     }
 
@@ -27,7 +30,7 @@ public class SearchWorker implements Callable<MineResult> {
             String strLine;
 
             while ((strLine = br.readLine()) != null) {
-                if (strLine.matches(pattern))
+                if (matcher.isMatches(strLine, criteria))
                     result.addLine(strLine);
             }
 

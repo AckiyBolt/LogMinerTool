@@ -3,6 +3,9 @@ package ua.bolt.logminer;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ua.bolt.logminer.matcher.ContainsMatcher;
+import ua.bolt.logminer.matcher.Matcher;
+import ua.bolt.logminer.matcher.RegexpMatcher;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -32,8 +35,12 @@ public class ExecutorTest {
     private static final String LINE_WITH_CORRECT_CONTENT = "neque porro quisquam est, qui dolorem ipsum, quia dolor sit";
     private static final String CORRECT_CONTENT = "lorem ipsum";
 
+    private static final Matcher CONTAINS_MATCHER = new ContainsMatcher();
+    private static final Matcher REGEXP_MATCHER = new RegexpMatcher();
+
 
     private Executor undertest;
+
 
     @Before
     public void setUp() throws Exception {
@@ -50,34 +57,98 @@ public class ExecutorTest {
         deleteTestDirIfExist(testDir);
     }
 
+
     @Test
-    public void testExecuteFor_whenFilesExist() throws Exception {
+    public void testExecuteFor_givenContainsMatcher_whenFilesExist() throws Exception {
 
         createFiles(WRONG_FORMAT, true);
         createFiles(CORRECT_FORMAT, true);
 
-        undertest.executeFor(Paths.get(TEST_FOLDER), CORRECT_FORMAT, CORRECT_CONTENT, new File(OUTPUT_FILE));
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
 
         assertTrue(Arrays.equals(getFileHash(CORRECT_TEST_FILE), getFileHash(OUTPUT_FILE)));
     }
 
     @Test
-    public void testExecuteFor_whenFilesExistButWithoutContent() throws Exception {
+    public void testExecuteFor_givenContainsMatcher_whenFilesExistButWithoutContent() throws Exception {
 
         createFiles(WRONG_FORMAT, true);
         createFiles(CORRECT_FORMAT, false);
 
-        undertest.executeFor(Paths.get(TEST_FOLDER), CORRECT_FORMAT, CORRECT_CONTENT, new File(OUTPUT_FILE));
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
 
         assertTrue(Arrays.equals(getFileHash(EMPTY_TEST_FILE), getFileHash(OUTPUT_FILE)));
     }
 
     @Test
-    public void testExecuteFor_whenNoFiles() throws Exception {
+    public void testExecuteFor_givenContainsMatcher_whenNoFiles() throws Exception {
 
         createFiles(WRONG_FORMAT, true);
 
-        undertest.executeFor(Paths.get(TEST_FOLDER), CORRECT_FORMAT, CORRECT_CONTENT, new File(OUTPUT_FILE));
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
+
+        assertTrue(Arrays.equals(getFileHash(EMPTY_TEST_FILE), getFileHash(OUTPUT_FILE)));
+    }
+
+
+    @Test
+    public void testExecuteFor_givenRegexpMatcher_whenFilesExist() throws Exception {
+
+        createFiles(WRONG_FORMAT, true);
+        createFiles(CORRECT_FORMAT, true);
+
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
+
+        assertTrue(Arrays.equals(getFileHash(CORRECT_TEST_FILE), getFileHash(OUTPUT_FILE)));
+    }
+
+    @Test
+    public void testExecuteFor_givenRegexpMatcher_whenFilesExistButWithoutContent() throws Exception {
+
+        createFiles(WRONG_FORMAT, true);
+        createFiles(CORRECT_FORMAT, false);
+
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
+
+        assertTrue(Arrays.equals(getFileHash(EMPTY_TEST_FILE), getFileHash(OUTPUT_FILE)));
+    }
+
+    @Test
+    public void testExecuteFor_givenRegexpMatcher_whenNoFiles() throws Exception {
+
+        createFiles(WRONG_FORMAT, true);
+
+        undertest.executeFor(
+                Paths.get(TEST_FOLDER),
+                CORRECT_FORMAT,
+                CORRECT_CONTENT,
+                new File(OUTPUT_FILE),
+                CONTAINS_MATCHER);
 
         assertTrue(Arrays.equals(getFileHash(EMPTY_TEST_FILE), getFileHash(OUTPUT_FILE)));
     }

@@ -16,9 +16,26 @@ public class Validator {
 
         result = result && isRootDirValid(args[0]);
         result = result && isOutFilePathValid(args[3]);
-        result = result && isCriteriaValid(args[2]);
+        result = result && isRegexFlagValid(args[2]);
+        if (isRegexFlagY(args[2]))
+            result = result && isCriteriaValid(args[3]);
 
         return result;
+    }
+
+    public static boolean isRegexFlagValid(String arg) {
+        boolean result = true;
+
+        if (!arg.matches("([Yy]|[Nn])")) {
+            result = false;
+            System.out.println("Regular expression flag is wrong.");
+        }
+
+        return result;
+    }
+
+    private static boolean isRegexFlagY(String arg) {
+        return arg.matches("[Yy]");
     }
 
     private static boolean isCriteriaValid(String arg) {

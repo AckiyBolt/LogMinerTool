@@ -1,6 +1,7 @@
 package ua.bolt.logminer;
 
 import ua.bolt.logminer.domain.MineResult;
+import ua.bolt.logminer.matcher.Matcher;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -25,14 +26,14 @@ public class Executor {
         filesFinder = new FilesFinder();
     }
 
-    public void executeFor(Path folder, String filesFormat, String searchable, File outFile) {
+    public void executeFor(Path folder, String filesFormat, String searchable, File outFile, Matcher matcher) {
 
         ExecutorService executor = Executors.newFixedThreadPool(POOL_SIZE);
 
         Set<Path> files = filesFinder.findFilesInFolder(folder, filesFormat);
         StatCollector.setFoundedFiles(files.size());
 
-        List<Future<MineResult>> futureResults = searchLinesInFiles(searchable, files, executor);
+        List<Future<MineResult>> futureResults = searchLinesInFiles(searchable, files, executor, matcher);
         printResults(futureResults, outFile);
 
         executor.shutdown();
@@ -60,12 +61,12 @@ public class Executor {
         fileWriter.closeWriter();
     }
 
-    private List<Future<MineResult>> searchLinesInFiles(String searchable, Set<Path> files, ExecutorService executor) {
+    private List<Future<MineResult>> searchLinesInFiles(String searchable, Set<Path> files, ExecutorService executor, Matcher matcher) {
 
         List<Future<MineResult>> futureResults = new ArrayList<>(files.size());
 
         for (Path file: files) {
-            SearchWorker callable = new SearchWorker(file.toFile(), searchable);
+            SearchWorker callable = new SearchWorker(file.toFile(), searchable, matcher);
             futureResults.add(executor.submit(callable));
         }
         return futureResults;
