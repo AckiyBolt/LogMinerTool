@@ -17,7 +17,9 @@ public class Main {
 
     public static void main (String ... args) throws IllegalArgumentException {
 
-        if (isHelpCalled(args) || !isVaildArgs(args)) {
+        Validator validator = new Validator();
+
+        if (isHelpCalled(args) || !validator.isArgsVaild(args)) {
             printHelp();
             System.exit(1);
         }
@@ -26,7 +28,7 @@ public class Main {
 
         startPath = Paths.get(args[0]);
         fileFormat = args[1];
-        searchable = args[2];
+        searchable = ".*" + args[2] + ".*";
         outFile = new File(args[3]);
 
         Executor executor = new Executor();
@@ -39,35 +41,6 @@ public class Main {
         System.out.println("Done.");
     }
 
-    private static boolean isVaildArgs(String[] args) {
-
-        boolean result = true;
-
-        File rootDir = new File(args[0]);
-        if (!rootDir.exists() && !rootDir.isDirectory() && !rootDir.canRead()) {
-            System.out.println("Root directory doesn't exist OR it's not a directory OR I haven't read permission for it.");
-            result = false;
-        } else {
-            System.out.println("Root directory exist.");
-        }
-
-        File outFile = new File(args[3]);
-        try {
-
-            if (outFile.exists()) {
-                System.out.println("Output file exists. Recreating.");
-                outFile.delete();
-            }
-            outFile.createNewFile();
-            System.out.println("Output file was created.");
-
-        } catch (IOException ex) {
-            System.out.println("Can't touch output file. Access is closed or path does not exist.");
-            result = false;
-        }
-
-        return result;
-    }
 
     private static boolean isHelpCalled(String[] args) {
         return !(args.length == 4);
@@ -88,7 +61,9 @@ public class Main {
                         .append(System.lineSeparator())
                         .append("   <file_format> - format of searchable files.")
                         .append(System.lineSeparator())
-                        .append("   <looking_for> - something that log line should contains.")
+                        .append("   <looking_for> - regular expression that matches searchable line.")
+                        .append(System.lineSeparator())
+                        .append("                   ru man is here: http://www.quizful.net/post/Java-RegExp")
                         .append(System.lineSeparator())
                         .append("   <out_file>    - output file path. If exist - will be deleted. Be careful.")
                         .append(System.lineSeparator())
